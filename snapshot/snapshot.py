@@ -89,6 +89,18 @@ class Processor:
         if not meta:
             raise Exception(f"Failed to find META.json or META.yml in {archive}")
 
+        core_package = self.core_modules[self.perl_version].get(package, None)
+        if core_package and str(core_package) >= str(meta['version']):
+            logger.warning(f"Found {package} in core modules with version {core_package}, from meta {meta['version']}")
+            return {
+                "name": package,
+                "version": core_package,
+                "download_url": None,
+                "requires": [],
+                "dynamic_config": False,
+                "is_core": True,
+            }
+
         if meta.get('dynamic_config', 0):
             logger.warning(f"Package {package} has dynamic_config")
 
