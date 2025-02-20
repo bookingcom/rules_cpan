@@ -94,10 +94,22 @@ class Processor:
 
         download_url_meta = json.loads(open(archive + ".meta").read())
 
+        requires = meta.get('requires', meta.get('prereqs', {}).get('runtime', {}).get('requires', []))
+
+        is_test = package.startswith("Test::")
+
+        def cleanup_test_deps(deps):
+            for dep in deps:
+                if dep.startswith("Test::"):
+                    if is_test:
+                        yield dep
+                    continue
+                yield dep
+
         return {
             "name": package,
             "version": meta.get('version', '0'),
-            "requires": meta.get('requires', meta.get('prereqs', {}).get('runtime', {}).get('requires', [])),
+            "requires": sorted(list(cleanup_test_deps(requires))),
             "conflicts": meta.get('conflicts', []),
             "is_core": False,
             "url": download_url_meta["download_url"],

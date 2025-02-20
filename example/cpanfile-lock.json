@@ -38,7 +38,6 @@
       "Exporter",
       "ExtUtils::MakeMaker",
       "IPC::Open3",
-      "Test::More",
       "overload",
       "strict",
       "warnings"
@@ -52,7 +51,6 @@
       "Exporter",
       "ExtUtils::MakeMaker",
       "IPC::Open3",
-      "Test::More",
       "overload",
       "strict",
       "warnings"
@@ -107,8 +105,7 @@
     "dependencies": [
       "Carp",
       "File::Basename",
-      "Scalar::Util",
-      "Test::More"
+      "Scalar::Util"
     ],
     "url": "https://cpan.metacpan.org/authors/id/X/XS/XSAWYERX/PathTools-3.75.tar.gz",
     "sha256": "a558503aa6b1f8c727c0073339081a77888606aa701ada1ad62dd9d8c3f945a2"
@@ -374,8 +371,7 @@
     "dependencies": [
       "Carp",
       "File::Basename",
-      "Scalar::Util",
-      "Test::More"
+      "Scalar::Util"
     ],
     "url": "https://cpan.metacpan.org/authors/id/X/XS/XSAWYERX/PathTools-3.75.tar.gz",
     "sha256": "a558503aa6b1f8c727c0073339081a77888606aa701ada1ad62dd9d8c3f945a2"
@@ -385,8 +381,7 @@
     "dependencies": [
       "Carp",
       "File::Basename",
-      "Scalar::Util",
-      "Test::More"
+      "Scalar::Util"
     ],
     "url": "https://cpan.metacpan.org/authors/id/X/XS/XSAWYERX/PathTools-3.75.tar.gz",
     "sha256": "a558503aa6b1f8c727c0073339081a77888606aa701ada1ad62dd9d8c3f945a2"
@@ -529,8 +524,7 @@
   "IO-File": {
     "release": "IO-1.55",
     "dependencies": [
-      "File::Temp",
-      "Test::More"
+      "File::Temp"
     ],
     "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-1.55.tar.gz",
     "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f"
@@ -548,8 +542,7 @@
   "IO-Handle": {
     "release": "IO-1.55",
     "dependencies": [
-      "File::Temp",
-      "Test::More"
+      "File::Temp"
     ],
     "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-1.55.tar.gz",
     "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f"
@@ -557,8 +550,7 @@
   "IO-Seekable": {
     "release": "IO-1.55",
     "dependencies": [
-      "File::Temp",
-      "Test::More"
+      "File::Temp"
     ],
     "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-1.55.tar.gz",
     "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f"
@@ -566,8 +558,7 @@
   "IO-Select": {
     "release": "IO-1.55",
     "dependencies": [
-      "File::Temp",
-      "Test::More"
+      "File::Temp"
     ],
     "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-1.55.tar.gz",
     "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f"
@@ -575,8 +566,7 @@
   "IO-Socket": {
     "release": "IO-1.55",
     "dependencies": [
-      "File::Temp",
-      "Test::More"
+      "File::Temp"
     ],
     "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-1.55.tar.gz",
     "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f"
@@ -613,9 +603,7 @@
   },
   "JSON": {
     "release": "JSON-4.09",
-    "dependencies": [
-      "Test::More"
-    ],
+    "dependencies": [],
     "url": "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.09.tar.gz",
     "sha256": "6780a51f438c0932eec0534fc9cd2b1ad0d64817eda4add8ede5ec77d6d2c991"
   },
@@ -708,7 +696,6 @@
     "release": "Module-CoreList-5.20250120",
     "dependencies": [
       "List::Util",
-      "Test::More",
       "version"
     ],
     "url": "https://cpan.metacpan.org/authors/id/B/BI/BINGOS/Module-CoreList-5.20250120.tar.gz",
@@ -814,8 +801,7 @@
   "Params-Check": {
     "release": "Params-Check-0.38",
     "dependencies": [
-      "Locale::Maketext::Simple",
-      "Test::More"
+      "Locale::Maketext::Simple"
     ],
     "url": "https://cpan.metacpan.org/authors/id/B/BI/BINGOS/Params-Check-0.38.tar.gz",
     "sha256": "f0c9d33876c36b1bca1475276d26d2efaf449b256d7cc8118fae012e89a26290"
@@ -869,7 +855,6 @@
       "Pod::Simple::XMLOutStream",
       "Pod::Text",
       "Symbol",
-      "Test::More",
       "Text::ParseWords",
       "parent",
       "strict",
@@ -1007,8 +992,6 @@
       "Role::Tiny::With",
       "Scalar::Util",
       "Sub::Quote",
-      "Test::Fatal",
-      "Test::More",
       "Try::Tiny",
       "overload",
       "parent",
@@ -1037,8 +1020,6 @@
       "Role::Tiny::With",
       "Scalar::Util",
       "Sub::Quote",
-      "Test::Fatal",
-      "Test::More",
       "Try::Tiny",
       "overload",
       "parent",
@@ -1067,8 +1048,6 @@
       "Role::Tiny::With",
       "Scalar::Util",
       "Sub::Quote",
-      "Test::Fatal",
-      "Test::More",
       "Try::Tiny",
       "overload",
       "parent",
@@ -1097,8 +1076,6 @@
       "Role::Tiny::With",
       "Scalar::Util",
       "Sub::Quote",
-      "Test::Fatal",
-      "Test::More",
       "Try::Tiny",
       "overload",
       "parent",
@@ -1127,8 +1104,6 @@
       "Role::Tiny::With",
       "Scalar::Util",
       "Sub::Quote",
-      "Test::Fatal",
-      "Test::More",
       "Try::Tiny",
       "overload",
       "parent",
@@ -1157,8 +1132,6 @@
       "Role::Tiny::With",
       "Scalar::Util",
       "Sub::Quote",
-      "Test::Fatal",
-      "Test::More",
       "Try::Tiny",
       "overload",
       "parent",
@@ -1187,8 +1160,6 @@
       "Role::Tiny::With",
       "Scalar::Util",
       "Sub::Quote",
-      "Test::Fatal",
-      "Test::More",
       "Try::Tiny",
       "overload",
       "parent",
@@ -1228,65 +1199,6 @@
     "url": "https://cpan.metacpan.org/authors/id/S/SH/SHAY/perl-5.40.1.tar.gz",
     "sha256": "02f8c45bb379ed0c3de7514fad48c714fd46be8f0b536bfd5320050165a1ee26"
   },
-  "Term-Table": {
-    "release": "Term-Table-0.024",
-    "dependencies": [
-      "Carp",
-      "List::Util",
-      "Scalar::Util"
-    ],
-    "url": "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Term-Table-0.024.tar.gz",
-    "sha256": "52288538c3b0514bcd2b61f645686c256619e56a421ae992e2b76d31927c4ece"
-  },
-  "Test-Builder": {
-    "release": "Test-Simple-1.302209",
-    "dependencies": [
-      "B",
-      "Data::Dumper",
-      "Exporter",
-      "File::Spec",
-      "File::Temp",
-      "Scalar::Util",
-      "Storable",
-      "Term::Table",
-      "Time::HiRes",
-      "overload",
-      "utf8"
-    ],
-    "url": "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302209.tar.gz",
-    "sha256": "dde1a388b94e178808039361f6393c7195f72518c39967a7a3582299b8c39e3e"
-  },
-  "Test-Fatal": {
-    "release": "Test-Fatal-0.017",
-    "dependencies": [
-      "Carp",
-      "Exporter",
-      "Test::Builder",
-      "Try::Tiny",
-      "strict",
-      "warnings"
-    ],
-    "url": "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Test-Fatal-0.017.tar.gz",
-    "sha256": "37dfffdafb84b762efe96b02fb2aa41f37026c73e6b83590db76229697f3c4a6"
-  },
-  "Test-More": {
-    "release": "Test-Simple-1.302209",
-    "dependencies": [
-      "B",
-      "Data::Dumper",
-      "Exporter",
-      "File::Spec",
-      "File::Temp",
-      "Scalar::Util",
-      "Storable",
-      "Term::Table",
-      "Time::HiRes",
-      "overload",
-      "utf8"
-    ],
-    "url": "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302209.tar.gz",
-    "sha256": "dde1a388b94e178808039361f6393c7195f72518c39967a7a3582299b8c39e3e"
-  },
   "Text-ParseWords": {
     "release": "Text-ParseWords-3.31",
     "dependencies": [],
@@ -1306,7 +1218,6 @@
       "Exporter",
       "ExtUtils::MakeMaker",
       "File::Spec",
-      "Test::More",
       "XSLoader",
       "strict"
     ],
@@ -1399,17 +1310,13 @@
   },
   "XSLoader": {
     "release": "XSLoader-0.24",
-    "dependencies": [
-      "Test::More"
-    ],
+    "dependencies": [],
     "url": "https://cpan.metacpan.org/authors/id/S/SA/SAPER/XSLoader-0.24.tar.gz",
     "sha256": "e819a35a6b8e55cb61b290159861f0dc00fe9d8c4f54578eb24f612d45c8d85f"
   },
   "base": {
     "release": "base-2.23",
-    "dependencies": [
-      "Test::More"
-    ],
+    "dependencies": [],
     "url": "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/base-2.23.tar.gz",
     "sha256": "40f55841299a9fe6fab03cd098f94e9221fb516978e9ef40fd8ff2cbd6625dde"
   },
@@ -1421,9 +1328,7 @@
   },
   "constant": {
     "release": "constant-1.33",
-    "dependencies": [
-      "Test::More"
-    ],
+    "dependencies": [],
     "url": "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/constant-1.33.tar.gz",
     "sha256": "79965d4130eb576670e27ca0ae6899ef0060c76da48b02b97682166882f1b504"
   },
