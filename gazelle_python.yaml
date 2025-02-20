@@ -4,6 +4,13 @@
 #   bazel run //:gazelle_python_manifest.update
 
 manifest:
-  modules_mapping: {}
+  modules_mapping:
+    certifi: certifi
+    charset_normalizer: charset_normalizer
+    idna: idna
+    requests: requests
+    urllib3: urllib3
+    xdg_base_dirs: xdg_base_dirs
+    yaml: PyYAML
   pip_repository:
     name: pip
