@@ -1,3 +1,4 @@
+load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@gazelle//:def.bzl", "gazelle")
 load("@pip//:requirements.bzl", "all_whl_requirements")
 load("@rules_multirun//:defs.bzl", "multirun")
@@ -84,5 +85,13 @@ multirun(
     commands = [
         ":gazelle_python_manifest.update",
         ":gazelle_python_manifest_with_types.update",
+    ],
+)
+
+buildifier(
+    name = "buildifier",
+    exclude_patterns = [
+        "./.git/*",
+        "external/*",
     ],
 )

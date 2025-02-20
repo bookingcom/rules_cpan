@@ -1,7 +1,9 @@
-module(name = "rules_cpan_example", version = "0.0.0")
+module(
+    name = "rules_cpan_example",
+    version = "0.0.0",
+)
 
 bazel_dep(name = "rules_perl", version = "0.2.4")
-
 bazel_dep(name = "rules_cpan")
 local_path_override(
     module_name = "rules_cpan",
@@ -11,15 +13,16 @@ local_path_override(
 cpan = use_extension("@rules_cpan//cpan:extensions.bzl", "cpan")
 cpan.install(
     name = "cpan_deps",
-    lock = "//:cpanfile.snapshot.lock.json",
+    lock = "//:cpanfile-lock.json",
 )
 use_repo(cpan, "cpan_deps")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 http_archive(
     name = "lcov",
     build_file = "//:lcov.BUILD",
-    url = "https://github.com/linux-test-project/lcov/releases/download/v2.1/lcov-2.1.tar.gz",
     integrity = "sha256-TQHZ9VGj8OhozoR0L7YKrEQH4/wWImNaB+KdcOOPH68=",
     strip_prefix = "lcov-2.1",
+    url = "https://github.com/linux-test-project/lcov/releases/download/v2.1/lcov-2.1.tar.gz",
 )
