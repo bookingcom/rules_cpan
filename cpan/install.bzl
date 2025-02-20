@@ -6,6 +6,9 @@ load("@rules_perl//perl:perl.bzl", "perl_library")
 perl_library(
     name = "{distribution}",
     srcs = glob(["**/*"], exclude=["t/**/*", "xt/**/*"]),
+    deps = [
+        {deps}
+    ],
     visibility = ["//visibility:public"],
 )
 """
@@ -34,7 +37,14 @@ def _install_impl(rctx):
             stripPrefix = item["release"],
             output = distribution,
         )
-        rctx.file(distribution + "/BUILD", _MODULE_BUILD_TEMPLATE.format(distribution = distribution), executable = False)
+        rctx.file(
+            distribution + "/BUILD",
+            _MODULE_BUILD_TEMPLATE.format(
+                distribution = distribution,
+                deps = "\n".join(["        '//{}',".format(dep.replace("::", "-")) for dep in item["dependencies"]]),
+            ),
+            executable = False,
+        )
 
     rctx.file("BUILD", _REPO_BUILD_TEMPLATE.format(
         main_target_name = rctx.attr.main_target_name,
