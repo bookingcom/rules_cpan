@@ -8,3 +8,4 @@ requires 'Memory::Process';
 requires 'Module::Load::Conditional';
 requires 'Scalar::Util';
 requires 'Time::HiRes';
+requires 'JSON', '>=4.00,<4.10';
