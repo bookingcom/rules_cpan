@@ -1,0 +1,4 @@
+# if you make changes to this file then you need to run:
+#
+# bazel run //:requirements.update && bazel run //:update_gazelle_python_manifests
+#
