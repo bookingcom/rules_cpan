@@ -25,6 +25,7 @@ py_binary(
     },
     visibility = ["//:__subpackages__"],
     deps = [
+        "@pip//filetype",
         "@pip//pyyaml",
         "@pip//requests",
         "@pip//xdg_base_dirs",
@@ -36,6 +37,7 @@ py_library(
     srcs = ["snapshot.py"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "@pip//filetype",
         "@pip//pyyaml",
         "@pip//requests",
         "@pip//xdg_base_dirs",

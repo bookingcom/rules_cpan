@@ -9,12 +9,14 @@ import os
 import sys
 import tarfile
 import urllib
-from collections import OrderedDict
+import zipfile
+from collections import OrderedDict, defaultdict
 from functools import partial
 from multiprocessing import Pool, TimeoutError
 from re import compile
 from typing import Dict
 
+import filetype
 import requests
 import yaml
 from xdg_base_dirs import xdg_cache_home
@@ -23,6 +25,21 @@ REQUIRES = compile(r'''requires\s+['"]([^\s]+)['"](,\s*['"]([^'"]+)['"])?\s*;\s*
 
 logger = logging.getLogger(__name__)
 
+
+def prettify(d, indent=0):
+    '''
+    Print the file tree structure with proper indentation.
+    '''
+    for key, value in d.items():
+        if type(value) is list:
+            if value:
+                print('  ' * indent + str(value))
+        else:
+            print('  ' * indent + str(key))
+            if isinstance(value, dict):
+                prettify(value, indent+1)
+            else:
+                print('  ' * (indent+1) + str(value))
 
 class Processor:
     def __init__(self,
@@ -40,6 +57,7 @@ class Processor:
 
         self.core_modules = self.parse_core_modules(core_modules)
         self.dependencies = self.parse_cpanfile(cpanfile)
+        self.members_per_package = {}
 
         if perl_version:
             if perl_version not in self.core_modules:
@@ -62,16 +80,38 @@ class Processor:
         out = json.load(core_modules)
         return out
 
-    def _read_package_meta(self, archive):
+    def populate_paths_per_package(self, package, files):
+        def attach(branch, trunk):
+            if '/' not in branch:
+                trunk[branch] = defaultdict(dict, list())
+                return
+
+            parts = branch.split('/', 1)
+            if len(parts) == 1:
+                trunk[parts[0]].append(parts[1])
+                return
+
+            node, others = parts
+            if node not in trunk:
+                trunk[node] = defaultdict(dict, list())
+            attach(others, trunk[node])
+
+        self.members_per_package[package] = defaultdict(dict, list())
+        for member in files:
+            attach(member, self.members_per_package[package])
+
+    def _read_package_meta_tar(self, package, archive):
         def extractfile(member, extract):
             try:
                 content = tar.extractfile(member).read().decode()
                 return extract(content)
-            except UnicodeDecodeError:
+            except (UnicodeDecodeError, json.decoder.JSONDecodeError, yaml.YAMLError) as e:
                 logger.error(f"Failed to decode {member.name} in {archive}")
                 return None
 
-        with tarfile.open(archive) as tar:
+        try:
+            tar = tarfile.open(archive)
+            self.populate_paths_per_package(package, tar.getnames())
             for member in tar.getmembers():
                 if member.name.endswith('/META.json'):
                     content = extractfile(member, json.loads)
@@ -81,16 +121,57 @@ class Processor:
                     content = extractfile(member, yaml.safe_load)
                     if content:
                         return content
+        except tarfile.ReadError:
+            logger.exception(f"Failed to read {archive}")
+
         return None
 
-    def get_package_meta(self, package, archive):
-        meta = self._read_package_meta(archive)
+    def _read_package_meta_zip(self, package, archive):
+        def extractfile(zip, member, extract):
+            try:
+                content = zip.open(member).read().decode()
+                return extract(content)
+            except (UnicodeDecodeError, json.decoder.JSONDecodeError, yaml.YAMLError) as e:
+                logger.error(f"Failed to decode {member.name} in {archive}")
+                return None
 
-        if not meta:
-            raise Exception(f"Failed to find META.json or META.yml in {archive}")
+        try:
+            zip = zipfile.ZipFile(archive, 'r')
+            self.populate_paths_per_package(package, zip.namelist())
+            for member in zip.namelist():
+                if member.endswith('/META.json'):
+                    content = extractfile(zip, member, json.loads)
+                    if content:
+                        return content
+                if member.endswith('/META.yml'):
+                    content = extractfile(zip, member, yaml.safe_load)
+                    if content:
+                        return content
+        except tarfile.ReadError:
+            logger.exception(f"Failed to read {archive}")
+
+        return None
+
+    def _read_package_meta(self, package, archive):
+        kind = filetype.guess(archive)
+        if kind is None:
+            raise RuntimeError(f"Failed to guess type of {archive}")
+
+        if kind.mime in ['application/x-tar', 'application/gzip']:
+            return self._read_package_meta_tar(package, archive)
+
+        if kind.mime == "application/zip":
+            return self._read_package_meta_zip(package, archive)
+
+        raise RuntimeError(f"Unsupported file type {kind.mime} for {archive}")
+
+    def get_package_meta(self, package, archive):
+        meta = self._read_package_meta(package, archive) or {}
+
+        download_url_meta = json.loads(open(archive + ".meta").read())
 
         core_package = self.core_modules[self.perl_version].get(package, None)
-        if core_package and str(core_package) >= str(meta['version']):
+        if core_package and str(core_package) >= str(meta.get('version', download_url_meta.get('version', None))):
             logger.warning(f"Found {package} in core modules with version {core_package}, from meta {meta['version']}")
             return {
                 "name": package,
@@ -101,12 +182,13 @@ class Processor:
                 "is_core": True,
             }
 
+        if not meta:
+            logger.warning(f"Failed to find META.json or META.yml in {archive}")
+
         if meta.get('dynamic_config', 0):
             logger.warning(f"Package {package} has dynamic_config")
 
-        download_url_meta = json.loads(open(archive + ".meta").read())
-
-        requires = meta.get('requires', meta.get('prereqs', {}).get('runtime', {}).get('requires', []))
+        requires = meta.get('requires', meta.get('prereqs', {}).get('runtime', {}).get('requires', None)) or []
 
         is_test = package.startswith("Test::")
 
@@ -118,14 +200,19 @@ class Processor:
                     continue
                 yield dep
 
+        files = self.members_per_package.get(package, {})
+        if not files:
+            logger.warning(f"Failed to find files for {package} in {archive}")
+            logger.warning(self.members_per_package.keys())
+
         return {
             "name": package,
-            "version": meta.get('version', '0'),
+            "version": meta.get('version', download_url_meta.get('version', None)),
             "requires": sorted(list(cleanup_test_deps(requires))),
             "conflicts": meta.get('conflicts', []),
             "is_core": False,
             "url": download_url_meta["download_url"],
-            "release": download_url_meta["release"],
+            "release": download_url_meta["release"] if download_url_meta["release"] in files else sorted(files.keys())[0],
             "sha256": download_url_meta["checksum_sha256"],
         }
 
@@ -168,7 +255,10 @@ class Processor:
                         "url": None,
                     }
                 logger.error(f"Failed to find {package} {version_spec}")
-                return None
+                return {
+                    "name": package,
+                    "is_failure": True
+                }
             url = download_url.json()['download_url']
             checksum_sha256 = download_url.json()['checksum_sha256']
             meta = download_url.json()
@@ -185,13 +275,14 @@ class Processor:
                     sha256.update(chunk)
 
         if sha256.hexdigest() != checksum_sha256:
-            raise RuntimeException(f"Checksum mismatch for {package} {version_spec} {url} expected {checksum_sha256} got {sha256.hexdigest()}")
+            raise RuntimeError(f"Checksum mismatch for {package} {version_spec} {url} expected {checksum_sha256} got {sha256.hexdigest()}")
 
         open(cache_file + ".meta", "w").write(json.dumps(meta))
 
         return self.get_package_meta(package, cache_file)
 
     def process(self):
+        logger.info(f"Running with {self.jobs} jobs")
         logger.info(f"Found {len(self.dependencies)} dependencies")
         logger.debug(f"Dependencies: {self.dependencies}")
 
@@ -202,6 +293,7 @@ class Processor:
         os.makedirs(self.cache_directory, exist_ok=True)
 
         resolved = dict()
+        failures = set()
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=self.jobs) as executor:
             while pending:
@@ -209,12 +301,19 @@ class Processor:
                 futures = executor.map(self.get_package_meta_after_download, pending)
                 pending.clear()
                 for result in futures:
+                    if result.get('is_failure', False):
+                        failures.add(result['name'])
+                        continue
+
                     resolved[result['name']] = result
                     for dep in result['requires']:
                         if dep not in resolved:
                             pending.add((dep, None))
 
         resolved.pop("perl", None)
+
+        if failures:
+            logger.error(f"Failed to resolve {len(failures)} dependencies: {sorted(failures)}")
 
         keys = []
         pure_core = []
@@ -227,10 +326,19 @@ class Processor:
         for key in pure_core:
             resolved.pop(key)
 
-        out = OrderedDict()
+        requested = OrderedDict()
+        for key, value in self.dependencies.items():
+            requested[key] = value
+
+        out = OrderedDict({
+            "failures": sorted(failures),
+            "requested": requested,
+            "resolved": OrderedDict(),
+        })
+
         for name in sorted(resolved.keys()):
             values = resolved[name]
-            out[name.replace("::", "-")] = OrderedDict({
+            out["resolved"][name.replace("::", "-")] = OrderedDict({
                 "release": values['release'],
                 "dependencies": sorted([x for x in values['requires'] if x in resolved]),
                 "url": values['url'],

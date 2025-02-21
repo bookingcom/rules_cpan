@@ -30,7 +30,8 @@ perl_library(
 def _install_impl(rctx):
     rctx = rctx  # type: repository_ctx
     lockfile = json.decode(rctx.read(rctx.attr.lock))
-    for distribution, item in lockfile.items():
+    resolved = lockfile.get("resolved", lockfile)
+    for distribution, item in resolved.items():
         rctx.download_and_extract(
             url = item["url"],
             sha256 = item["sha256"],
@@ -48,7 +49,7 @@ def _install_impl(rctx):
 
     rctx.file("BUILD", _REPO_BUILD_TEMPLATE.format(
         main_target_name = rctx.attr.main_target_name,
-        deps = ["//" + dep for dep in lockfile.keys()],
+        deps = ["//" + dep for dep in resolved.keys()],
     ), executable = False)
     rctx.file("WORKSPACE", "", executable = False)
 

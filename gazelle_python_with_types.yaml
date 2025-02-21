@@ -7,6 +7,7 @@ manifest:
   modules_mapping:
     certifi: certifi
     charset_normalizer: charset_normalizer
+    filetype: filetype
     idna: idna
     requests: requests
     urllib3: urllib3
