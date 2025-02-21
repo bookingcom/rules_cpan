@@ -23,23 +23,30 @@ from xdg_base_dirs import xdg_cache_home
 
 REQUIRES = compile(r'''requires\s+['"]([^\s]+)['"](,\s*['"]([^'"]+)['"])?\s*;\s*$''')
 
+FILE_MARKER = '<files>'
+
 logger = logging.getLogger(__name__)
 
 
-def prettify(d, indent=0):
+def flatten(d, prefix):
     '''
-    Print the file tree structure with proper indentation.
+    Flatten a tree like dictionary into a list
     '''
+    prefix = f"{prefix}/" if prefix else ""
+    out = []
     for key, value in d.items():
-        if type(value) is list:
-            if value:
-                print('  ' * indent + str(value))
+        if key == FILE_MARKER:
+            out.extend([f'{prefix}{x}' for x in value])
+            continue
+        if type(value) in [dict, defaultdict]:
+            out.extend(flatten(value, f'{prefix}{key}'))
+        elif type(value) is list:
+            for item in value:
+                out.append(f'{prefix}{key}/{item}')
         else:
-            print('  ' * indent + str(key))
-            if isinstance(value, dict):
-                prettify(value, indent+1)
-            else:
-                print('  ' * (indent+1) + str(value))
+            raise RuntimeError(prefix, key, value)
+    return out
+
 
 class Processor:
     def __init__(self,
@@ -82,19 +89,14 @@ class Processor:
 
     def populate_paths_per_package(self, package, files):
         def attach(branch, trunk):
-            if '/' not in branch:
-                trunk[branch] = defaultdict(dict, list())
-                return
-
             parts = branch.split('/', 1)
-            if len(parts) == 1:
-                trunk[parts[0]].append(parts[1])
-                return
-
-            node, others = parts
-            if node not in trunk:
-                trunk[node] = defaultdict(dict, list())
-            attach(others, trunk[node])
+            if len(parts) == 1:  # branch is a file
+                trunk[FILE_MARKER].append(parts[0])
+            else:
+                node, others = parts
+                if node not in trunk:
+                    trunk[node] = defaultdict(dict, ((FILE_MARKER, []),))
+                attach(others, trunk[node])
 
         self.members_per_package[package] = defaultdict(dict, list())
         for member in files:
@@ -111,7 +113,7 @@ class Processor:
 
         try:
             tar = tarfile.open(archive)
-            self.populate_paths_per_package(package, tar.getnames())
+            self.populate_paths_per_package(package, [x.name for x in tar.getmembers() if not x.isdir()])
             for member in tar.getmembers():
                 if member.name.endswith('/META.json'):
                     content = extractfile(member, json.loads)
@@ -137,7 +139,7 @@ class Processor:
 
         try:
             zip = zipfile.ZipFile(archive, 'r')
-            self.populate_paths_per_package(package, zip.namelist())
+            self.populate_paths_per_package(package, [x.filename for x in zip.infolist() if not x.is_dir()])
             for member in zip.namelist():
                 if member.endswith('/META.json'):
                     content = extractfile(zip, member, json.loads)
@@ -164,6 +166,14 @@ class Processor:
             return self._read_package_meta_zip(package, archive)
 
         raise RuntimeError(f"Unsupported file type {kind.mime} for {archive}")
+
+    def _get_xs_modules(self, package):
+        files = list(flatten(self.members_per_package[package], ""))
+        xs_modules = []
+        for member in files:
+            if member.endswith('.xs') or member.endswith('.c') or member.endswith('.h'):
+                xs_modules.append(member)
+        return xs_modules
 
     def get_package_meta(self, package, archive):
         meta = self._read_package_meta(package, archive) or {}
@@ -205,7 +215,9 @@ class Processor:
             logger.warning(f"Failed to find files for {package} in {archive}")
             logger.warning(self.members_per_package.keys())
 
-        return {
+        xs_module = self._get_xs_modules(package)
+
+        out = {
             "name": package,
             "version": meta.get('version', download_url_meta.get('version', None)),
             "requires": sorted(list(cleanup_test_deps(requires))),
@@ -215,6 +227,11 @@ class Processor:
             "release": download_url_meta["release"] if download_url_meta["release"] in files else sorted(files.keys())[0],
             "sha256": download_url_meta["checksum_sha256"],
         }
+
+        if xs_module:
+            out["xs_module_files"] = sorted(xs_module)
+
+        return out
 
     def get_package_meta_after_download(self, config, **kw):
         package, version_spec = config
@@ -338,12 +355,16 @@ class Processor:
 
         for name in sorted(resolved.keys()):
             values = resolved[name]
-            out["resolved"][name.replace("::", "-")] = OrderedDict({
+            package_name = name.replace("::", "-")
+            out["resolved"][package_name] = OrderedDict({
                 "release": values['release'],
                 "dependencies": sorted([x for x in values['requires'] if x in resolved]),
                 "url": values['url'],
-                "sha256": values['sha256']
+                "sha256": values['sha256'],
             })
+
+            if "xs_module_files" in values:
+                out["resolved"][package_name]["xs_module_files"] = values["xs_module_files"]
 
         return out
 
