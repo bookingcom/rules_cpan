@@ -230,6 +230,9 @@ class Processor:
 
         if xs_module:
             out["xs_module_files"] = sorted(xs_module)
+            build_requires = meta.get('prereqs', {}).get('build', {}).get('requires', None) or {}
+            configure_requires = meta.get('prereqs', {}).get('configure', {}).get('requires', None) or {}
+            out["build_requires"] = build_requires | configure_requires
 
         return out
 
@@ -326,6 +329,10 @@ class Processor:
                     for dep in result['requires']:
                         if dep not in resolved:
                             pending.add((dep, None))
+                    if 'xs_module_files' in result:
+                        for dep in result['build_requires'].keys():
+                            if dep not in resolved:
+                                pending.add((dep, None))
 
         resolved.pop("perl", None)
 
@@ -365,6 +372,7 @@ class Processor:
 
             if "xs_module_files" in values:
                 out["resolved"][package_name]["xs_module_files"] = values["xs_module_files"]
+                out["resolved"][package_name]["build_requires"] = sorted(values["build_requires"].keys())
 
         return out
 

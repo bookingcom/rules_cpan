@@ -56,19 +56,72 @@
       "release": "Clone-0.47",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/Clone-0.47.tar.gz",
-      "sha256": "4c2c0cb9a483efbf970cb1a75b2ca75b0e18cb84bcb5c09624f86e26b09c211d"
+      "sha256": "4c2c0cb9a483efbf970cb1a75b2ca75b0e18cb84bcb5c09624f86e26b09c211d",
+      "xs_module_files": [
+        "Clone-0.47/Clone.xs",
+        "Clone-0.47/ppport.h"
+      ],
+      "build_requires": []
     },
     "Compress-Raw-Bzip2": {
       "release": "Compress-Raw-Bzip2-2.213",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/P/PM/PMQS/Compress-Raw-Bzip2-2.213.tar.gz",
-      "sha256": "8d75d3d366c9101ca18061b00d438d3da39478c06159147dea3c666770577c7b"
+      "sha256": "8d75d3d366c9101ca18061b00d438d3da39478c06159147dea3c666770577c7b",
+      "xs_module_files": [
+        "Compress-Raw-Bzip2-2.213/Bzip2.xs",
+        "Compress-Raw-Bzip2-2.213/bzip2-src/blocksort.c",
+        "Compress-Raw-Bzip2-2.213/bzip2-src/bzlib.c",
+        "Compress-Raw-Bzip2-2.213/bzip2-src/bzlib.h",
+        "Compress-Raw-Bzip2-2.213/bzip2-src/bzlib_private.h",
+        "Compress-Raw-Bzip2-2.213/bzip2-src/compress.c",
+        "Compress-Raw-Bzip2-2.213/bzip2-src/crctable.c",
+        "Compress-Raw-Bzip2-2.213/bzip2-src/decompress.c",
+        "Compress-Raw-Bzip2-2.213/bzip2-src/huffman.c",
+        "Compress-Raw-Bzip2-2.213/bzip2-src/randtable.c",
+        "Compress-Raw-Bzip2-2.213/fallback/constants.h",
+        "Compress-Raw-Bzip2-2.213/fallback/constants.xs",
+        "Compress-Raw-Bzip2-2.213/ppport.h"
+      ],
+      "build_requires": [
+        "ExtUtils::MakeMaker"
+      ]
     },
     "Compress-Raw-Zlib": {
       "release": "Compress-Raw-Zlib-2.213",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/P/PM/PMQS/Compress-Raw-Zlib-2.213.tar.gz",
-      "sha256": "56b21c99cb3a3a7f7876a74dd05daa3f41fc9143ddd4dc98f8e46710a106af45"
+      "sha256": "56b21c99cb3a3a7f7876a74dd05daa3f41fc9143ddd4dc98f8e46710a106af45",
+      "xs_module_files": [
+        "Compress-Raw-Zlib-2.213/Zlib.xs",
+        "Compress-Raw-Zlib-2.213/fallback/constants.h",
+        "Compress-Raw-Zlib-2.213/fallback/constants.xs",
+        "Compress-Raw-Zlib-2.213/ppport.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/adler32.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/compress.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/crc32.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/crc32.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/deflate.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/deflate.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/infback.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/inffast.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/inffast.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/inffixed.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/inflate.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/inflate.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/inftrees.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/inftrees.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/trees.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/trees.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/uncompr.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/zconf.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/zlib.h",
+        "Compress-Raw-Zlib-2.213/zlib-src/zutil.c",
+        "Compress-Raw-Zlib-2.213/zlib-src/zutil.h"
+      ],
+      "build_requires": [
+        "ExtUtils::MakeMaker"
+      ]
     },
     "DateTime": {
       "release": "DateTime-1.66",
@@ -90,7 +143,13 @@
         "parent"
       ],
       "url": "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-1.66.tar.gz",
-      "sha256": "afabd686fb83d3ebf49ee453974f9122f3eec9b25ff8d2ddf4f12de92af1e5e2"
+      "sha256": "afabd686fb83d3ebf49ee453974f9122f3eec9b25ff8d2ddf4f12de92af1e5e2",
+      "xs_module_files": [
+        "DateTime-1.66/DateTime.xs",
+        "DateTime-1.66/leap_seconds.h",
+        "DateTime-1.66/ppport.h"
+      ],
+      "build_requires": []
     },
     "DateTime-Locale": {
       "release": "DateTime-Locale-1.44",
@@ -130,7 +189,11 @@
         "HTML::Entities"
       ],
       "url": "https://cpan.metacpan.org/authors/id/P/PJ/PJCJ/Devel-Cover-1.44.tar.gz",
-      "sha256": "f40c1543992e5d65a6f78003d462d59acd79ae6d30d38047b1c69d999d2b1fd8"
+      "sha256": "f40c1543992e5d65a6f78003d462d59acd79ae6d30d38047b1c69d999d2b1fd8",
+      "xs_module_files": [
+        "Devel-Cover-1.44/Cover.xs"
+      ],
+      "build_requires": []
     },
     "Devel-StackTrace": {
       "release": "Devel-StackTrace-2.05",
@@ -144,7 +207,11 @@
       "release": "Digest-MD5-2.59",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/Digest-MD5-2.59.tar.gz",
-      "sha256": "b5ecba079bd5907d52663a659cd977b6247526abe6aed9b818d083dd99af77d2"
+      "sha256": "b5ecba079bd5907d52663a659cd977b6247526abe6aed9b818d083dd99af77d2",
+      "xs_module_files": [
+        "Digest-MD5-2.59/MD5.xs"
+      ],
+      "build_requires": []
     },
     "Dist-CheckConflicts": {
       "release": "Dist-CheckConflicts-0.11",
@@ -162,7 +229,14 @@
         "parent"
       ],
       "url": "https://cpan.metacpan.org/authors/id/D/DA/DANKOGAI/Encode-3.21.tar.gz",
-      "sha256": "eacf71c5eb49e0e590de797f1982d7fb95d8481e4d13c3ce79eb32ef9373b3db"
+      "sha256": "eacf71c5eb49e0e590de797f1982d7fb95d8481e4d13c3ce79eb32ef9373b3db",
+      "xs_module_files": [
+        "Encode-3.21/Encode.xs",
+        "Encode-3.21/Encode/encode.h",
+        "Encode-3.21/Unicode/Unicode.xs",
+        "Encode-3.21/encengine.c"
+      ],
+      "build_requires": []
     },
     "Encode-Alias": {
       "release": "Encode-3.21",
@@ -171,7 +245,14 @@
         "parent"
       ],
       "url": "https://cpan.metacpan.org/authors/id/D/DA/DANKOGAI/Encode-3.21.tar.gz",
-      "sha256": "eacf71c5eb49e0e590de797f1982d7fb95d8481e4d13c3ce79eb32ef9373b3db"
+      "sha256": "eacf71c5eb49e0e590de797f1982d7fb95d8481e4d13c3ce79eb32ef9373b3db",
+      "xs_module_files": [
+        "Encode-3.21/Encode.xs",
+        "Encode-3.21/Encode/encode.h",
+        "Encode-3.21/Unicode/Unicode.xs",
+        "Encode-3.21/encengine.c"
+      ],
+      "build_requires": []
     },
     "Encode-Locale": {
       "release": "Encode-Locale-1.05",
@@ -207,6 +288,15 @@
       "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/Exporter-5.78.tar.gz",
       "sha256": "bd17e99219aa2fb6a8acb3d11deffcb588708c70fc29f346e20ea7f71d3a48f0"
     },
+    "ExtUtils-MakeMaker": {
+      "release": "ExtUtils-MakeMaker-7.70",
+      "dependencies": [
+        "Encode",
+        "Pod::Man"
+      ],
+      "url": "https://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.70.tar.gz",
+      "sha256": "f108bd46420d2f00d242825f865b0f68851084924924f92261d684c49e3e7a74"
+    },
     "File-ShareDir": {
       "release": "File-ShareDir-1.118",
       "dependencies": [
@@ -234,7 +324,21 @@
         "URI::URL"
       ],
       "url": "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTML-Parser-3.83.tar.gz",
-      "sha256": "7278ce9791256132b26a71a5719451844704bb9674b58302c3486df43584f8c0"
+      "sha256": "7278ce9791256132b26a71a5719451844704bb9674b58302c3486df43584f8c0",
+      "xs_module_files": [
+        "HTML-Parser-3.83/Parser.xs",
+        "HTML-Parser-3.83/hctype.h",
+        "HTML-Parser-3.83/hparser.c",
+        "HTML-Parser-3.83/hparser.h",
+        "HTML-Parser-3.83/pfunc.h",
+        "HTML-Parser-3.83/ppport.h",
+        "HTML-Parser-3.83/tokenpos.h",
+        "HTML-Parser-3.83/util.c"
+      ],
+      "build_requires": [
+        "ExtUtils::MakeMaker",
+        "perl"
+      ]
     },
     "HTML-Tagset": {
       "release": "HTML-Tagset-3.24",
@@ -315,7 +419,14 @@
       "release": "IO-1.55",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-1.55.tar.gz",
-      "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f"
+      "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f",
+      "xs_module_files": [
+        "IO-1.55/IO.xs",
+        "IO-1.55/poll.c",
+        "IO-1.55/poll.h",
+        "IO-1.55/ppport.h"
+      ],
+      "build_requires": []
     },
     "IO-HTML": {
       "release": "IO-HTML-1.004",
@@ -330,19 +441,40 @@
       "release": "IO-1.55",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-1.55.tar.gz",
-      "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f"
+      "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f",
+      "xs_module_files": [
+        "IO-1.55/IO.xs",
+        "IO-1.55/poll.c",
+        "IO-1.55/poll.h",
+        "IO-1.55/ppport.h"
+      ],
+      "build_requires": []
     },
     "IO-Select": {
       "release": "IO-1.55",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-1.55.tar.gz",
-      "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f"
+      "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f",
+      "xs_module_files": [
+        "IO-1.55/IO.xs",
+        "IO-1.55/poll.c",
+        "IO-1.55/poll.h",
+        "IO-1.55/ppport.h"
+      ],
+      "build_requires": []
     },
     "IO-Socket": {
       "release": "IO-1.55",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-1.55.tar.gz",
-      "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f"
+      "sha256": "0443afebb9a48f29611e9b17a017f430b51167a498fa4646c07f8dce03b6b95f",
+      "xs_module_files": [
+        "IO-1.55/IO.xs",
+        "IO-1.55/poll.c",
+        "IO-1.55/poll.h",
+        "IO-1.55/ppport.h"
+      ],
+      "build_requires": []
     },
     "IO-Uncompress-Inflate": {
       "release": "IO-Compress-2.213",
@@ -381,7 +513,11 @@
         "common::sense"
       ],
       "url": "https://cpan.metacpan.org/authors/id/M/ML/MLEHMANN/JSON-XS-4.03.tar.gz",
-      "sha256": "515536f45f2fa1a7e88c8824533758d0121d267ab9cb453a1b5887c8a56b9068"
+      "sha256": "515536f45f2fa1a7e88c8824533758d0121d267ab9cb453a1b5887c8a56b9068",
+      "xs_module_files": [
+        "JSON-XS-4.03/XS.xs"
+      ],
+      "build_requires": []
     },
     "LWP-MediaTypes": {
       "release": "LWP-MediaTypes-6.04",
@@ -396,7 +532,15 @@
       "release": "Scalar-List-Utils-1.68",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Scalar-List-Utils-1.68.tar.gz",
-      "sha256": "23317e4346fe8747f0167eccd1881d6369aa71023f014cd6f846988843295906"
+      "sha256": "23317e4346fe8747f0167eccd1881d6369aa71023f014cd6f846988843295906",
+      "xs_module_files": [
+        "Scalar-List-Utils-1.68/ListUtil.xs",
+        "Scalar-List-Utils-1.68/multicall.h",
+        "Scalar-List-Utils-1.68/ppport.h"
+      ],
+      "build_requires": [
+        "ExtUtils::MakeMaker"
+      ]
     },
     "MIME-Base32": {
       "release": "MIME-Base32-1.303",
@@ -477,6 +621,14 @@
       "url": "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/Params-ValidationCompiler-0.31.tar.gz",
       "sha256": "7b6497173f1b6adb29f5d51d8cf9ec36d2f1219412b4b2410e9d77a901e84a6d"
     },
+    "Pod-Man": {
+      "release": "podlators-v6.0.2",
+      "dependencies": [
+        "Pod::Simple"
+      ],
+      "url": "https://cpan.metacpan.org/authors/id/R/RR/RRA/podlators-v6.0.2.tar.gz",
+      "sha256": "2992125eab7d2b1c5a2b15a26ad7955f7d989eba6c831abdcaf2000e86a91337"
+    },
     "Pod-Simple": {
       "release": "Pod-Simple-3.45",
       "dependencies": [
@@ -528,13 +680,29 @@
       "release": "Scalar-List-Utils-1.68",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Scalar-List-Utils-1.68.tar.gz",
-      "sha256": "23317e4346fe8747f0167eccd1881d6369aa71023f014cd6f846988843295906"
+      "sha256": "23317e4346fe8747f0167eccd1881d6369aa71023f014cd6f846988843295906",
+      "xs_module_files": [
+        "Scalar-List-Utils-1.68/ListUtil.xs",
+        "Scalar-List-Utils-1.68/multicall.h",
+        "Scalar-List-Utils-1.68/ppport.h"
+      ],
+      "build_requires": [
+        "ExtUtils::MakeMaker"
+      ]
     },
     "Socket": {
       "release": "Socket-2.038",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Socket-2.038.tar.gz",
-      "sha256": "563d11731ff44307fa2779a6958fd2d2f6643fbd9a3174cbf350228b159681f8"
+      "sha256": "563d11731ff44307fa2779a6958fd2d2f6643fbd9a3174cbf350228b159681f8",
+      "xs_module_files": [
+        "Socket-2.038/Socket.xs"
+      ],
+      "build_requires": [
+        "ExtUtils::CBuilder",
+        "ExtUtils::Constant",
+        "ExtUtils::MakeMaker"
+      ]
     },
     "Specio": {
       "release": "Specio-0.50",
@@ -802,7 +970,14 @@
       "release": "version-0.9933",
       "dependencies": [],
       "url": "https://cpan.metacpan.org/authors/id/L/LE/LEONT/version-0.9933.tar.gz",
-      "sha256": "dc07d9388ca3d3f67146312904bcdb35fe416bb30056158f80df3281a94fae58"
+      "sha256": "dc07d9388ca3d3f67146312904bcdb35fe416bb30056158f80df3281a94fae58",
+      "xs_module_files": [
+        "version-0.9933/vutil/ppport.h",
+        "version-0.9933/vutil/vutil.c",
+        "version-0.9933/vutil/vutil.h",
+        "version-0.9933/vutil/vxs.xs"
+      ],
+      "build_requires": []
     }
   }
 }
