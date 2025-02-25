@@ -1,3 +1,4 @@
 build --verbose_failures
+build:silent --ui_event_filters=ERROR
 common --color=yes
 test --test_output=errors
