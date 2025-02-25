@@ -6,8 +6,7 @@ perl_toolchain_path(
 )
 
 perl_binary(
-    name = "run-makefile-pl",
-    srcs = ["run-makefile.pl", ":perl_toolchain_path"],
-    main = "run-makefile.pl",
-    visibility = ["//visibility:public"]
+    name = "build-with-make",
+    srcs = ["build-with-make.pl"],
+    visibility = ["//visibility:public"],
 )
