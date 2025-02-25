@@ -115,10 +115,12 @@ class Processor:
             tar = tarfile.open(archive)
             self.populate_paths_per_package(package, [x.name for x in tar.getmembers() if not x.isdir()])
             for member in tar.getmembers():
+                # META.json is the preferred format
                 if member.name.endswith('/META.json'):
                     content = extractfile(member, json.loads)
                     if content:
                         return content
+            for member in tar.getmembers():
                 if member.name.endswith('/META.yml'):
                     content = extractfile(member, yaml.safe_load)
                     if content:
@@ -230,9 +232,18 @@ class Processor:
 
         if xs_module:
             out["xs_module_files"] = sorted(xs_module)
-            build_requires = meta.get('prereqs', {}).get('build', {}).get('requires', None) or {}
-            configure_requires = meta.get('prereqs', {}).get('configure', {}).get('requires', None) or {}
-            out["build_requires"] = build_requires | configure_requires
+
+        prereqs = meta.get('prereqs', {})
+        build_requires = prereqs.get('build', {}).get('requires', meta.get("build_requires", {})) or {}
+        configure_requires = prereqs.get('configure', {}).get('requires', meta.get("configure_requires", {})) or {}
+        build_requires.update(configure_requires)
+        deps = list(build_requires.keys())
+
+        for d in deps:
+            if d in self.core_modules[self.perl_version]:
+                build_requires.pop(d)
+
+        out["build_requires"] = build_requires
 
         return out
 
@@ -255,7 +266,7 @@ class Processor:
 
         with requests.get(url) as download_url:
             if download_url.status_code != requests.codes.ok:
-                if self.core_modules[self.perl_version].get(package, None):
+                if package in self.core_modules[self.perl_version]:
                     with open(cache_file + ".meta", "w") as f:
                         f.write(json.dumps({
                             "name": package,
@@ -326,15 +337,15 @@ class Processor:
                         continue
 
                     resolved[result['name']] = result
+
                     for dep in result['requires']:
                         if dep not in resolved:
                             pending.add((dep, None))
-                    if 'xs_module_files' in result:
+
+                    if 'build_requires' in result:
                         for dep in result['build_requires'].keys():
                             if dep not in resolved:
                                 pending.add((dep, None))
-
-        resolved.pop("perl", None)
 
         if failures:
             logger.error(f"Failed to resolve {len(failures)} dependencies: {sorted(failures)}")
@@ -360,6 +371,11 @@ class Processor:
             "resolved": OrderedDict(),
         })
 
+        resolved.pop("perl", None)
+        for key in list(resolved.keys()):
+            if key in self.core_modules[self.perl_version]:
+                resolved.pop(key)
+
         for name in sorted(resolved.keys()):
             values = resolved[name]
             package_name = name.replace("::", "-")
@@ -372,7 +388,9 @@ class Processor:
 
             if "xs_module_files" in values:
                 out["resolved"][package_name]["xs_module_files"] = values["xs_module_files"]
-                out["resolved"][package_name]["build_requires"] = sorted(values["build_requires"].keys())
+
+            build_requires = sorted([x for x in values["build_requires"].keys() if x in resolved])
+            out["resolved"][package_name]["build_requires"] = build_requires
 
         return out
 

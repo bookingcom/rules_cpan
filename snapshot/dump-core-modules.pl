@@ -10,7 +10,7 @@ for my $version (keys %Module::CoreList::version) {
     $out->{ $version } = $Module::CoreList::version{ $version };
 }
 
-my $json = JSON::PP->new->ascii->pretty->allow_nonref;
+my $json = JSON::PP->new->ascii->pretty->allow_nonref->canonical(1);
 
 my $filename = $ARGV[0] || '/dev/stdout';
 
